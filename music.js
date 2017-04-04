@@ -3,7 +3,7 @@
 command: 'MusicWidgets.widget/musicWidget.sh && cat MusicWidgets.widget/currentTrack.txt'
 //command: 'cat MusicWidgets.widget/currentTrack.txt'
 
-,refreshFrequency: 10000
+,refreshFrequency: 100000
 
 
 ,render: function(output) {
@@ -13,6 +13,7 @@ command: 'MusicWidgets.widget/musicWidget.sh && cat MusicWidgets.widget/currentT
    html += '<div id="track"></div>';
    html += '<div id="trackinfo"></div>';
    html += '<div id="lyrics"></div>';
+   html += '<div id="spectrogram">test<img src="MusicWidgets.widget/spectrogram.png"/></div>';
    html += '</div>';
 
   html +=  '</div>';
@@ -28,6 +29,7 @@ command: 'MusicWidgets.widget/musicWidget.sh && cat MusicWidgets.widget/currentT
 	info.html(output);
 	lyrics = $(domElement).find('#lyrics');
 	lyrics.html("Lyrics");
+	
 }
 
 
@@ -54,7 +56,7 @@ command: 'MusicWidgets.widget/musicWidget.sh && cat MusicWidgets.widget/currentT
 ,style: "													\n\
 	top: 20px														\n\
 	left: 20px														\n\
-	color: #ff0												\n\
+	color: #000												\n\
 															\n\
 	#musicWidget											\n\
 		background: rgba(#000, .5)							\n\
@@ -66,7 +68,10 @@ command: 'MusicWidgets.widget/musicWidget.sh && cat MusicWidgets.widget/currentT
 															\n\
 	#trackinfo												\n\
 		background: #00ff00									\n\
+		color: #000											\n\
 															\n\
+	#lyrics													\n\
+		background: #0000ff									\n\
 	#lyrics													\n\
 		background: #0000ff									\n\
 "
