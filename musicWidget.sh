@@ -111,8 +111,8 @@ elif playerState 'VOX'; then
 	sox "$trackPATH";
 else
 	albumPATH=$(pwd)/$WIDGET/albumart.jpg;
-	rm -f $albumPATH;
-	rm -f $WIDGET/spectrogram.png;
-	rm -f $TMPFILE*;
+	rm -f "$albumPATH";
+	rm -f "$WIDGET/spectrogram.png";
+	rm -f "$TMPFILE*";
 fi
 
