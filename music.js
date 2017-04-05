@@ -1,77 +1,76 @@
+/**
+ * MusicWidget
+ * ____________________________________________________________________________
+ *
+ * 	Spectrogram Requires installation of sox https://sox.sourceforge.io/.
+ *
+ */
 
 
-command: 'MusicWidgets.widget/musicWidget.sh && cat MusicWidgets.widget/currentTrack.txt'
-//command: 'cat MusicWidgets.widget/currentTrack.txt'
+command: 'MusicWidgets.widget/musicWidget.sh'
 
-,refreshFrequency: 100000
+,refreshFrequency: 10000
 
 
 ,render: function(output) {
   //var data = this.parseOutput(output);
-  var html  = '<div id="musicWidget">';
+	var html  = '<div id="musicWidget">';
+			html += '<div id="debug"></div>';
+			html += '<div id="track"></div>';
+			html += '<div id="trackinfo"><div id="cover"><img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/></div><div id="trackTitle"></div><div id="trackArtist"></div>';
+   			html += '<div id="spectrogram"><img src="MusicWidgets.widget/spectrogram.png" onerror="this.style.display=\'none\'"/></div>';
+   			html += '<div id="lyrics"></div>';
+   		html += '</div>';
 
-   html += '<div id="track"></div>';
-   html += '<div id="trackinfo"></div>';
-   html += '<div id="lyrics"></div>';
-   html += '<div id="spectrogram">test<img src="MusicWidgets.widget/spectrogram.png"/></div>';
-   html += '</div>';
-
-  html +=  '</div>';
-  
   return html;
 }
 
 
-
 ,update: function(output, domElement) {
-	info = $(domElement).find('#trackinfo');
-	//info.html(this.readTextFile("file://~/Library/Application Support/Übersicht/widgets/MusicWidgets/currentTrack.txt"));
-	info.html(output);
-	lyrics = $(domElement).find('#lyrics');
-	lyrics.html("Lyrics");
-	
-}
-
-
-,readTextFile: function(file)
-{
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function ()
-    {
-        if(rawFile.readyState === 4)
-        {
-            if(rawFile.status === 200 || rawFile.status == 0)
-            {
-                var allText = rawFile.responseText;
-                return allText;
-            }
-        }
-    }
-    rawFile.send(null);
-    return "Fehler";
+	if(!output) return;
+	$(domElement).find('#debug').html(output);
+//	track = $.parseJSON(output);
+	$(domElement).find('#trackTitle').html(track.Title);
+	$(domElement).find('#trackArtist').html(track.Artist + " - " + track.Album + " (" + track.Year + ")");
+	$(domElement).find('#lyrics').html(track.Lyrics);
+	$(domElement).find('#spectrogram').html('<img src="MusicWidgets.widget/spectrogram.png" onerror="this.style.display=\'none\'"/>');
+	$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/>');
 }
 
 
 ,style: "													\n\
-	top: 20px														\n\
-	left: 20px														\n\
-	color: #000												\n\
+	top: 20px												\n\
+	left: 20px												\n\
+	color: #fff												\n\
+	padding: 15px											\n\
+	background: rgba(#000, .5)								\n\
+	border-radius: 5px										\n\
 															\n\
 	#musicWidget											\n\
-		background: rgba(#000, .5)							\n\
 		top: 10px											\n\
 		left: 10px											\n\
 															\n\
-	#track													\n\
-		background: #ff0000									\n\
-															\n\
 	#trackinfo												\n\
-		background: #00ff00									\n\
-		color: #000											\n\
+		color: #fff											\n\
 															\n\
-	#lyrics													\n\
-		background: #0000ff									\n\
-	#lyrics													\n\
-		background: #0000ff									\n\
+	#cover													\n\
+		float: left											\n\
+															\n\
+	#trackTitle												\n\
+		color: #fff											\n\
+		font-weight: bold									\n\
+															\n\
+	#spectrogram img										\n\
+		width: 500px										\n\
+		padding-top: 5px									\n\
+															\n\
+	#debug													\n\
+		background: #fff									\n\
+		color: #f00											\n\
+		display: block										\n\
+															\n\
+	#cover img													\n\
+		float: left									\n\
+		width: 100px											\n\
+															\n\
 "
