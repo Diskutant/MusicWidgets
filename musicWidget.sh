@@ -38,7 +38,7 @@ function urldecode {
 
 
 function hasTrackChanged {
-	SUFFIX=${1: -4};
+	SUFFIX=${1: -5};
 	
 	lastCheck=$(ls -l $TMPFILE$SUFFIX);		
 	
@@ -66,7 +66,7 @@ function sox {
 		return;
 	fi
 
-	SUFFIX=${1: -4};
+	SUFFIX=${1: -5};
 	if [ -e $TMPFILE$SUFFIX ] && [ "$(file $TMPFILE$SUFFIX)" == *"AAC"* ]; ##sox doesn't support AAC
 	then
 		rm -f $WIDGET/spectrogram.png;
