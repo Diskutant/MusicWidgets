@@ -7,7 +7,7 @@
  */
 
 
-command: 'MusicWidgets.widget/musicWidget.sh'
+command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.widget/trackinfo.json'
 
 ,refreshFrequency: 10000
 
@@ -27,14 +27,21 @@ command: 'MusicWidgets.widget/musicWidget.sh'
 
 
 ,update: function(output, domElement) {
-	if(!output) return;
+	if(!output || output.length <= 10 ) { 
+		$(domElement).find('#musicWidget').parent().css("display","none");
+		return; 
+	}
+	$(domElement).find('#musicWidget').parent().css("display","block");
 	$(domElement).find('#debug').html(output);
-//	track = $.parseJSON(output);
+	track = $.parseJSON(output);
 	$(domElement).find('#trackTitle').html(track.Title);
 	$(domElement).find('#trackArtist').html(track.Artist + " - " + track.Album + " (" + track.Year + ")");
 	$(domElement).find('#lyrics').html(track.Lyrics);
-	$(domElement).find('#spectrogram').html('<img src="MusicWidgets.widget/spectrogram.png" onerror="this.style.display=\'none\'"/>');
-	$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/>');
+//	$(domElement).find('#spectrogram').html('<img src="MusicWidgets.widget/spectrogram.png" onerror="this.style.display=\'none\'"/>');
+	if(track.hasArtwork) {
+//		$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/>');
+		$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" />');
+	}
 }
 
 
@@ -43,8 +50,10 @@ command: 'MusicWidgets.widget/musicWidget.sh'
 	left: 20px												\n\
 	color: #fff												\n\
 	padding: 15px											\n\
-	background: rgba(#000, .5)								\n\
 	border-radius: 5px										\n\
+	width: 400px 											\n\
+	background: rgba(#000, .5)								\n\
+	display: none											\n\
 															\n\
 	#musicWidget											\n\
 		top: 10px											\n\
@@ -67,10 +76,11 @@ command: 'MusicWidgets.widget/musicWidget.sh'
 	#debug													\n\
 		background: #fff									\n\
 		color: #f00											\n\
-		display: block										\n\
+		display: none										\n\
 															\n\
-	#cover img													\n\
-		float: left									\n\
-		width: 100px											\n\
+	#cover img												\n\
+		padding-right: 15px									\n\
+		float: left											\n\
+		width: 100px										\n\
 															\n\
 "
