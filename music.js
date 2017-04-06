@@ -9,20 +9,30 @@
 
 command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.widget/trackinfo.json'
 
-,refreshFrequency: 10000
+,refreshFrequency: 5000
 
 
 ,render: function(output) {
   //var data = this.parseOutput(output);
-	var html  = '<div id="musicWidget">';
+/*	var html  = '<div id="musicWidget">';
 			html += '<div id="debug"></div>';
 			html += '<div id="track"></div>';
 			html += '<div id="trackinfo"><div id="cover"><img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/></div><div id="trackTitle"></div><div id="trackArtist"></div>';
    			html += '<div id="spectrogram"><img src="MusicWidgets.widget/spectrogram.png" onerror="this.style.display=\'none\'"/></div>';
    			html += '<div id="lyrics"></div>';
    		html += '</div>';
-
-  return html;
+*/
+	var html  = '<div id="musicWidget">';
+			html += '<div id="cover"><img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/></div>';
+			html += '<div id="trackInfo">';
+				html +=	'<div id="trackTitle"></div>';
+				html +=	'<div id="trackArtist"></div>';
+			html += '</div>';
+			html += '<div id="spectrogram"><img src="MusicWidgets.widget/spectrogram.png" onerror="this.style.display=\'none\'"/></div>';   			
+   			html += '<div id="lyrics"></div>';
+   			html += '<div id="debug"></div>';
+   		html += '</div>';
+	return html;
 }
 
 
@@ -31,12 +41,23 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 		$(domElement).find('#musicWidget').parent().css("display","none");
 		return; 
 	}
+	
 	$(domElement).find('#musicWidget').parent().css("display","block");
 	$(domElement).find('#debug').html(output);
+	
 	track = $.parseJSON(output);
+
 	$(domElement).find('#trackTitle').html(track.Title);
-	$(domElement).find('#trackArtist').html(track.Artist + " - " + track.Album + " (" + track.Year + ")");
-	$(domElement).find('#lyrics').html(track.Lyrics);
+	
+	if(track.Year.length < 2) {
+		$(domElement).find('#trackArtist').html(track.Artist + " - " + track.Album );
+	} else {
+		$(domElement).find('#trackArtist').html(track.Artist + " - " + track.Year + " - " + track.Album );
+	}
+	
+//	$(domElement).find('#lyrics').html(track.Lyrics);
+	$(domElement).find('#lyrics').html("Test lyrics");
+	
 //	$(domElement).find('#spectrogram').html('<img src="MusicWidgets.widget/spectrogram.png" onerror="this.style.display=\'none\'"/>');
 	if(track.hasArtwork) {
 //		$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/>');
@@ -50,37 +71,36 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 	left: 20px												\n\
 	color: #fff												\n\
 	padding: 15px											\n\
-	border-radius: 5px										\n\
-	width: 400px 											\n\
-	background: rgba(#000, .5)								\n\
 	display: none											\n\
+	position: relative	\n\
 															\n\
-	#musicWidget											\n\
-		top: 10px											\n\
-		left: 10px											\n\
-															\n\
-	#trackinfo												\n\
+	#trackInfo											\n\
+		position: relative	\n\
+		border-radius: 5px										\n\
+		background: rgba(#0f0, .5)								\n\
 		color: #fff											\n\
 															\n\
 	#cover													\n\
-		float: left											\n\
+		padding-right: 15px									\n\
+		width: 100px										\n\
 															\n\
 	#trackTitle												\n\
 		color: #fff											\n\
 		font-weight: bold									\n\
 															\n\
+	#spectrogram											\n\
+		position: relative				\n\
+		left: 500px				\n\
+		padding: 15px										\n\
+		background: rgba(#f00, .5)							\n\
+															\n\
 	#spectrogram img										\n\
 		width: 500px										\n\
-		padding-top: 5px									\n\
 															\n\
 	#debug													\n\
 		background: #fff									\n\
 		color: #f00											\n\
 		display: none										\n\
 															\n\
-	#cover img												\n\
-		padding-right: 15px									\n\
-		float: left											\n\
-		width: 100px										\n\
 															\n\
 "

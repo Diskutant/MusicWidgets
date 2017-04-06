@@ -129,15 +129,18 @@ function getiTunesArtwork {
 
 
 function getVoxArtwork {
+	echo "$(date) getVoxArtwork - $(cat $TRACKINFOFILE) - $trackInfo" >>  "$LOGFILE";
 	if [ "$(cat $TRACKINFOFILE)" == "$trackInfo" ]; then
 		return 0;
 	fi
 	
 	rm -f "$ALBUMPATH";
 	
+	echo "$(date) getVoxArtwork2" >>  "$LOGFILE";
+	
 	osascript -e "tell application \"VOX\"
-					set ct to open for access \"$ALBUMPATH\" with write permission
 					set cd to artwork image
+					set ct to open for access \"$ALBUMPATH\" with write permission
 					write cd to ct
 					close access ct
 				  end tell";
@@ -175,11 +178,13 @@ function iTunes {
 
 function vox {
 	trackInfo=$(osascript -e 'tell application "VOX" to set {artistName, songName, albumName} to {artist, track, album}
-		return "{\"Artist\": \"" & artistName & "\", \"Album\": \"" & albumName & "\", \"Title\": \"" & songName & "\", \"Year\": \"" & "\", \"Lyrics\": \"" & lyricsRaw & "\"}"');
+		return "{\"Artist\": \"" & artistName & "\", \"Album\": \"" & albumName & "\", \"Title\": \"" & songName & "\", \"Year\": \"" & "\"}"');
+
+	getVoxArtwork;
 
 	echo $trackInfo > "$TRACKINFOFILE"; ##that file is read by the javaScript to display the info	
 	
-	getVoxArtwork;
+	
 
 	trackURL=$(osascript -e 'tell application "VOX" to return trackUrl');
 	trackPATH=$(urldecode $trackURL);
