@@ -47,13 +47,14 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 		$(domElement).find('#trackArtist').html(track.Artist + " - " + track.Year + " - " + track.Album );
 	}
 	
-	if(track.Lyrics <= 2) {
+	if(!track.Lyrics || track.Lyrics <= 2) {
 		$(domElement).find('#lyrics').css("display","none");
 	} else {
 		$(domElement).find('#lyrics').css("display","block");
 		$(domElement).find('#lyrics').html(track.Lyrics.replace("\n","<br>"));
 	}
 	
+	$(domElement).find('#spectrogram').html('<img src="MusicWidgets.widget/spectrogram.png" onerror="this.style.display=\'none\'"/>');
 	
 	if(track.hasArtwork) {
 		$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" />');
@@ -79,6 +80,7 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 		margin: 5px						\n\
 		border-radius: 5px				\n\
 		background: rgba(0,0,0, .5)		\n\
+		float: left \n\
 										\n\
 										\n\
 	#cover 								\n\
@@ -105,7 +107,7 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 										\n\
 	#spectrogram 						\n\
 		position: relative				\n\
-		top: -115px						\n\
+		top: 5px						\n\
 										\n\
 										\n\
 	#spectrogram img 					\n\
