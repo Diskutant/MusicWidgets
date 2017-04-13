@@ -1,0 +1,50 @@
+##//just a Backup
+	#trackInfo=$(osascript -e 'tell application "iTunes" to set {artistName, songName, albumName, albumYear, lyricsRaw} to {artist, name, album, year, lyrics} of current track
+	#	return "{\"Artist\": \"" & artistName & "\", \"Album\": \"" & albumName & "\", \"Title\": \"" & songName & "\", \"Year\": \"" & albumYear & "\", \"Lyrics\": \"" & lyricsRaw & "\", \"hasArtwork\": \"" & '$hasArtwork' & "\"}"');
+
+
+function sox {
+	log "sox $1";
+	
+	if [ ! -e "$SOXPATH" ]; then
+		return;
+	fi
+	
+	if ! hasTrackChanged; then
+		return;
+	fi
+
+	SUFFIX=${1: -5};
+	FILEINFO="$(file $TMPFILE$SUFFIX)";
+	##sox doesn't support AAC
+	if [ -e "$TMPFILE$SUFFIX" ] && [[ "$FILEINFO" == *"AAC"* ]]; then
+		rm -f "$WIDGET/spectrogram.png";
+	else
+		"$SOXPATH" "$TMPFILE$SUFFIX" -n spectrogram -r -o "$WIDGET/spectrogram.png";
+	fi
+}
+
+
+function hasTrackChangedOld {
+	log "hasTrackChangedOld $1";
+	
+	SUFFIX=${1: -5};
+	
+	if [ -e "$TMPFILE$SUFFIX" ]; then
+		lastCheck=$(ls -l "$TMPFILE$SUFFIX");
+		rm -f "$TMPFILE"*;
+	else
+		lastCheck="";	
+	fi
+	
+	ln -fs "$1" "$TMPFILE$SUFFIX"
+
+	currentCheck=$(ls -l "$TMPFILE$SUFFIX");	##check if track changed
+	if [ "$lastCheck" != "$currentCheck" ]; then
+		log "hasTrackChanged true - $1 -Last- $lastCheck -Current- $currentCheck";
+		return 1;
+	else
+		log "hasTrackChanged false - $1 -Last- $lastCheck -Current- $currentCheck";
+		return 0;
+	fi
+}

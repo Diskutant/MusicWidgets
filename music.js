@@ -13,15 +13,15 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 
 ,render: function(output) {
   //var data = this.parseOutput(output);
-
+	var myTest=0;
 	var html  = '<div id="musicWidget">';
 			html +=	'<div id="trackInfo">';
-				html += '<div id="cover"><img src="albumart.jpg" onerror="this.style.display=\'none\'"/></div>';
+				html += '<div id="cover"><img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/></div>';
 				html += '<div id="trackTitle">Songtitle</div>';
 				html += '<div id="trackArtist">Artist - Album (2012)</div>';
 			html += '</div>';
 			html += '<div id="lyrics"></div>';
-			html += '<div id="spectrogram"><img src="spectrogram.png" onerror="this.style.display=\'none\'"/></div>';
+			html += '<div id="spectrogram"><img src="MusicWidgets.widget/spectrogram.jpg" onerror="this.style.display=\'none\'"/></div>';
 			html += '<div id="debug"></div>';
 		html += '</div>';
 	return html;
@@ -54,13 +54,13 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 		$(domElement).find('#lyrics').html(track.Lyrics.replace("\n","<br>"));
 	}
 	
-	$(domElement).find('#spectrogram').html('<img src="MusicWidgets.widget/spectrogram.png" onerror="this.style.display=\'none\'"/>');
+	$(domElement).find('#spectrogram').html('<img src="MusicWidgets.widget/spectrogram.jpg" />');
 	
-	if(track.hasArtwork) {
-		$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" />');
-	}else{
-		$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/>');
-	}
+	//if(track.hasArtwork) {
+	//	$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" />');
+	//}else{
+	//	$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/>');
+	//}
 }
 
 
@@ -106,12 +106,18 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 										\n\
 										\n\
 	#spectrogram 						\n\
+		border-radius: 5px				\n\
 		position: relative				\n\
 		top: 5px						\n\
+		overflow: hidden				\n\
+		width: 792px					\n\
+		height: 482px					\n\
 										\n\
 										\n\
 	#spectrogram img 					\n\
-		width: 500px					\n\
+		position: relative				\n\
+		top: -68px						\n\
+		left: -50px						\n\
 		padding: 5px					\n\
 		border-radius: 5px				\n\
 		background: rgba(0,0,0, .5)		\n\
