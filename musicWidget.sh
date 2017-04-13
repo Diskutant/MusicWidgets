@@ -147,7 +147,7 @@ function iTunes {
 			spectrogram "$trackPATH";
 		else
 			#rm -f "$TMPFILE"*;
-			rm -f "$WIDGET/spectrogram.*";
+			rm -f "$WIDGET/spectrogram.jpg";
 		fi
 		echo $TRACKINFO > "$TRACKINFOFILE"; ##that file is read by the javaScript to display the info	
 	fi
@@ -179,7 +179,7 @@ elif playerState 'VOX'; then
 	vox;
 else
 	rm -f "$ALBUMPATH";
-	rm -f "$WIDGET/spectrogram.*";
+	rm -f "$WIDGET/spectrogram.jpg";
 	#rm -f "$TMPFILE"*;
 	echo "" > "$TRACKINFOFILE";
 fi

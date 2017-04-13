@@ -57,7 +57,7 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 	$(domElement).find('#spectrogram').html('<img src="MusicWidgets.widget/spectrogram.jpg" />');
 	
 	//if(track.hasArtwork) {
-	//	$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" />');
+		$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" />');
 	//}else{
 	//	$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/>');
 	//}
