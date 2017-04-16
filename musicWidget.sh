@@ -155,21 +155,25 @@ function iTunes {
 
 
 function vox {
+	log "Vox";
+	
 	TRACKINFO=$(osascript -e 'tell application "VOX" to set {artistName, songName, albumName} to {artist, track, album}
 		return "{\"Artist\": \"" & artistName & "\", \"Album\": \"" & albumName & "\", \"Title\": \"" & songName & "\", \"Year\": \"" & "\"}"');
 
-	getVoxArtwork;
+	#getVoxArtwork;
 
-	echo "VOX $TRACKINFO";
+	log "VOX $TRACKINFO";
+	if hasTrackChanged; then
+		getVoxArtwork
+		trackURL=$(osascript -e 'tell application "VOX" to return trackUrl');
+		trackPATH=$(urldecode $trackURL);
+		trackPATH="/"${trackPATH#*/}
 	
-	trackURL=$(osascript -e 'tell application "VOX" to return trackUrl');
-	trackPATH=$(urldecode $trackURL);
-	trackPATH="/"${trackPATH#*/}
+		#sox "$trackPATH";
+		spectrogram "$trackPATH";
 	
-	#sox "$trackPATH";
-	spectrogram "$trackPATH";
-	
-	echo $TRACKINFO > "$TRACKINFOFILE"; ##that file is read by the javaScript to display the info	
+		echo $TRACKINFO > "$TRACKINFOFILE"; ##that file is read by the javaScript to display the info	
+	fi
 }
 
 
