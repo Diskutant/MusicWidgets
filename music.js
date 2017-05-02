@@ -35,12 +35,15 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 	}
 
 	$(domElement).find('#musicWidget').parent().css("display","block");
-	$(domElement).find('#debug').html(output);
 
-	track = $.parseJSON(output);
+	//$(domElement).find('#debug').css("display","block");
 
-	if(track.Title != $(domElement).find('#trackTitle'))
+	if(output != $(domElement).find('#debug').html())
 	{
+		$(domElement).find('#debug').html(output);
+
+		track = $.parseJSON(output);
+
 		$(domElement).find('#trackTitle').html(track.Title);
 
 		if(track.Year.length < 2) {
