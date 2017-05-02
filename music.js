@@ -29,38 +29,41 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 
 
 ,update: function(output, domElement) {
-	if(!output || output.length <= 10 ) { 
+	if(!output || output.length <= 10 ) {
 		$(domElement).find('#musicWidget').parent().css("display","none");
-		return; 
+		return;
 	}
-	
+
 	$(domElement).find('#musicWidget').parent().css("display","block");
 	$(domElement).find('#debug').html(output);
-	
+
 	track = $.parseJSON(output);
 
-	$(domElement).find('#trackTitle').html(track.Title);
-	
-	if(track.Year.length < 2) {
-		$(domElement).find('#trackArtist').html(track.Artist + " - " + track.Album );
-	} else {
-		$(domElement).find('#trackArtist').html(track.Artist + " - " + track.Year + " - " + track.Album );
+	if(track.Title != $(domElement).find('#trackTitle'))
+	{
+		$(domElement).find('#trackTitle').html(track.Title);
+
+		if(track.Year.length < 2) {
+			$(domElement).find('#trackArtist').html(track.Artist + " - " + track.Album );
+		} else {
+			$(domElement).find('#trackArtist').html(track.Artist + " - " + track.Year + " - " + track.Album );
+		}
+
+		if(!track.Lyrics || track.Lyrics <= 2) {
+			$(domElement).find('#lyrics').css("display","none");
+		} else {
+			$(domElement).find('#lyrics').css("display","block");
+			$(domElement).find('#lyrics').html(track.Lyrics.replace("\n","<br>"));
+		}
+
+		$(domElement).find('#spectrogram').html('<img src="MusicWidgets.widget/spectrogram.jpg" />');
+
+		//if(track.hasArtwork) {
+			$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" />');
+		//}else{
+		//	$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/>');
+		//}
 	}
-	
-	if(!track.Lyrics || track.Lyrics <= 2) {
-		$(domElement).find('#lyrics').css("display","none");
-	} else {
-		$(domElement).find('#lyrics').css("display","block");
-		$(domElement).find('#lyrics').html(track.Lyrics.replace("\n","<br>"));
-	}
-	
-	$(domElement).find('#spectrogram').html('<img src="MusicWidgets.widget/spectrogram.jpg" />');
-	
-	//if(track.hasArtwork) {
-		$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" />');
-	//}else{
-	//	$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/>');
-	//}
 }
 
 
