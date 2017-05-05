@@ -61,11 +61,11 @@ function hasTrackChanged {
 
 function spectrogram {
 	log "spectrogram $1";
-	
+
 	if [ ! -e "$FFMPEGPATH" ]; then
 		return;
 	fi
-	
+
 	log "spectrogram createSpectrogram";
 	"$FFMPEGPATH" -y -i "$1" -lavfi showspectrumpic=s=ntsc:mode=separate $WIDGET/spectrogram.jpg 2>/dev/null;
 }
@@ -73,7 +73,7 @@ function spectrogram {
 
 function hasiTunesArtwork {
 	log "hasiTunesArtwork";
-	
+
 	hasartwork=$(osascript -e "tell application \"iTunes\"
 					try
 						set artKind to kind of artwork 1 of current track
@@ -82,7 +82,7 @@ function hasiTunesArtwork {
 						return \"false\"
 					end try
 				   end tell");
-		   
+
 	if [ "$hasartwork" == "true" ]; then
 		return 0;
 	else
@@ -93,9 +93,9 @@ function hasiTunesArtwork {
 
 function getiTunesArtwork {
 	log "getiTunesArtwork";
-		
-	rm -f "$ALBUMPATH";		
-	
+
+	rm -f "$ALBUMPATH";
+
 	if ! hasiTunesArtwork; then
 		return 0;
 	fi
@@ -107,56 +107,58 @@ function getiTunesArtwork {
 				set cd to data of artwork 1 of current track
 				write cd to ct
 				close access ct
-			end tell";	
+			end tell";
 	fi
 }
 
 
 function getVoxArtwork {
 	log "getVoxArtwork";
-	
+
 	rm -f "$ALBUMPATH";
-	
-	osascript -e "tell application \"VOX\"
+
+  osascript -e "tell application \"VOX\"
 					set cd to artwork image
-					set ct to open for access \"$ALBUMPATH\" with write permission
-					write cd to ct
-					close access ct
-				  end tell";
+					if cd is not missing value then
+						set ct to open for access \"$ALBUMPATH\" with write permission
+						write cd to ct
+						close access ct
+					end if
+	end tell";
 }
 
 
 function iTunes {
 	log "iTunes";
-	
+
 	TRACKINFO=$(osascript -e 'tell application "iTunes" to set {artistName, songName, albumName, albumYear, lyricsRaw} to {artist, name, album, year, lyrics} of current track
 		return "{\"Artist\": \"" & artistName & "\", \"Album\": \"" & albumName & "\", \"Title\": \"" & songName & "\", \"Year\": \"" & albumYear & "\", \"Lyrics\": \"" & lyricsRaw & "\"}"');
-	
+
 	log "iTunes $TRACKINFO";
-	
+
 	if hasTrackChanged; then
-		getiTunesArtwork;	
-	
+		getiTunesArtwork;
+
 		fileClass=$(osascript -e 'tell application "iTunes" to return class of current track');
 		if [ "$fileClass" == "file track" ]; then
 			trackURL=$(osascript -e 'tell application "iTunes" to return location of current track as text');
 			trackPATH="${trackURL//\://}"; ##replace ':' with '/'
 			trackPATH="/Volumes/$trackPATH";
-	
+
 			#sox "$trackPATH";
 			spectrogram "$trackPATH";
 		else
 			#rm -f "$TMPFILE"*;
 			rm -f "$WIDGET/spectrogram.jpg";
 		fi
-		echo $TRACKINFO > "$TRACKINFOFILE"; ##that file is read by the javaScript to display the info	
+		echo $TRACKINFO > "$TRACKINFOFILE"; ##that file is read by the javaScript to display the info
 	fi
 }
 
 
 function vox {
 	log "Vox";
-	
+
 	TRACKINFO=$(osascript -e 'tell application "VOX" to set {artistName, songName, albumName} to {artist, track, album}
 		return "{\"Artist\": \"" & artistName & "\", \"Album\": \"" & albumName & "\", \"Title\": \"" & songName & "\", \"Year\": \"" & "\"}"');
 
@@ -168,11 +170,11 @@ function vox {
 		trackURL=$(osascript -e 'tell application "VOX" to return trackUrl');
 		trackPATH=$(urldecode $trackURL);
 		trackPATH="/"${trackPATH#*/}
-	
+
 		#sox "$trackPATH";
 		spectrogram "$trackPATH";
-	
-		echo $TRACKINFO > "$TRACKINFOFILE"; ##that file is read by the javaScript to display the info	
+
+		echo $TRACKINFO > "$TRACKINFOFILE"; ##that file is read by the javaScript to display the info
 	fi
 }
 
@@ -187,4 +189,3 @@ else
 	#rm -f "$TMPFILE"*;
 	echo "" > "$TRACKINFOFILE";
 fi
-
