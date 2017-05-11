@@ -57,7 +57,7 @@
     if(!track.Lyrics || track.Lyrics <= 2) {
       $(domElement).find('#lyrics').css("display","none");
     } else {
-      //$(domElement).find('#lyrics').css("display","block");
+      $(domElement).find('#lyrics').css("display","block");
       $(domElement).find('#lyrics').html(track.Lyrics);
     }
 
