@@ -7,8 +7,8 @@
  */
 
 
-command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.widget/trackinfo.json'
 
+ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.widget/trackinfo.json'
 ,refreshFrequency: 5000
 
 ,render: function(output) {
@@ -40,6 +40,8 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 
 	if(output != $(domElement).find('#debug').html())
 	{
+
+		output = output.replace(/\r/g,"<br>");
 		$(domElement).find('#debug').html(output);
 
 		track = $.parseJSON(output);
@@ -56,7 +58,7 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 			$(domElement).find('#lyrics').css("display","none");
 		} else {
 			$(domElement).find('#lyrics').css("display","block");
-			$(domElement).find('#lyrics').html(track.Lyrics.replace("\n","<br>"));
+			$(domElement).find('#lyrics').html(track.Lyrics);
 		}
 
 		$(domElement).find('#spectrogram').html('<img src="MusicWidgets.widget/spectrogram.jpg" />');
@@ -66,6 +68,8 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 		//}else{
 		//	$(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/>');
 		//}
+
+
 	}
 }
 
@@ -108,7 +112,6 @@ command: 'MusicWidgets.widget/musicWidget.sh > /dev/null && cat MusicWidgets.wid
 		padding: 5px					\n\
 		width: 500px					\n\
 		background: rgba(0,0,0, .5)		\n\
-		float: left						\n\
 										\n\
 										\n\
 	#spectrogram 						\n\
