@@ -16,12 +16,12 @@
   var myTest=0;
   var html  = '<div id="musicWidget">';
       html +=  '<div id="trackInfo">';
-        html += '<div id="cover"><img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/></div>';
+        html += '<div id="cover"><img src="MusicWidgets.widget/albumart.jpg" onerror="this.parentNode.style.display=\'none\'"/></div>';
         html += '<div id="trackTitle">Songtitle</div>';
         html += '<div id="trackArtist">Artist - Album (2012)</div>';
       html += '</div>';
       html += '<div id="lyrics"></div>';
-      html += '<div id="spectrogram"><img src="MusicWidgets.widget/spectrogram.jpg" onerror="this.style.display=\'none\'"/></div>';
+      html += '<div id="spectrogram"><img src="MusicWidgets.widget/spectrogram.jpg" onerror="this.parentNode.style.display=\'none\'"/></div>';
       html += '<div id="debug"></div>';
     html += '</div>';
   return html;
@@ -61,10 +61,10 @@
       $(domElement).find('#lyrics').html(track.Lyrics);
     }
 
-    $(domElement).find('#spectrogram').html('<img src="MusicWidgets.widget/spectrogram.jpg" />');
+    $(domElement).find('#spectrogram').html('<img src="MusicWidgets.widget/spectrogram.jpg" onerror="this.parentNode.style.display=\'none\'"/>');
 
     //if(track.hasArtwork) {
-      $(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" />');
+      $(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" onerror="this.parentNode.style.display=\'none\'"/>');
     //}else{
     //  $(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/>');
     //}
