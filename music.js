@@ -64,6 +64,7 @@
     $(domElement).find('#spectrogram').html('<img src="MusicWidgets.widget/spectrogram.jpg" onerror="this.parentNode.style.display=\'none\'"/>');
 
     //if(track.hasArtwork) {
+      $(domElement).find('#cover').css("display","block");
       $(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" onerror="this.parentNode.style.display=\'none\'"/>');
     //}else{
     //  $(domElement).find('#cover').html('<img src="MusicWidgets.widget/albumart.jpg" onerror="this.style.display=\'none\'"/>');
